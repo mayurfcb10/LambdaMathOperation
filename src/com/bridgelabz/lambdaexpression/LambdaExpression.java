@@ -1,44 +1,48 @@
 package com.bridgelabz.lambdaexpression;
 
+import java.util.*;
+import java.util.List;
+import java.util.function.Consumer;
+
 public class LambdaExpression {
-	public static class Main {
-		@FunctionalInterface
-		interface IMathFunction {
-			int calculate(int a, int b);
-			static void printResult(int a, int b, String function, IMathFunction fobj ) {
-				System.out.println("Result of "+function+"is "+fobj.calculate(a, b));
+	public static <action> void main(String[] args) {
+		//create Sample Collection
+		List<Integer> myNumberList = new ArrayList<Integer>();
+		for (int i = 0; i < 5; i++)
+			myNumberList.add(i);
+
+		Iterator<Integer> it = myNumberList.iterator();
+		while (it.hasNext()) {
+			Integer i = it.next();
+			System.out.println("Iterator " + i);
+		}
+
+		class MyConsumer implements Consumer<Integer> {
+			public void accept(Integer t) {
+				System.out.println("Mth2: Comsumer impl Value: " + t);
 			}
 		}
-		
-		public static int add(int a, int b) {
-	            return Math.addExact(a, b);
-	        }
-		
-		public static void main(String[] args) {
-			System.out.println("Welcome to the Lambda Math Operation Problem ");
-			
-			IMathFunction add = (int a, int b) -> {
-	            return a + b;
-	        };
-	        
-			IMathFunction add1 = Integer::sum; // directly call method reference
-			IMathFunction addition= (x, y) -> x + y;
-			IMathFunction subtraction= (x, y) -> x - y;
-			IMathFunction multiply= (x, y) -> x * y;
-			IMathFunction divide= (x, y) -> x / y;
 
+		MyConsumer action = new MyConsumer();
+		myNumberList.forEach(action);
+		myNumberList.forEach(new Consumer<Integer>() {
+			@Override
+			public void accept(Integer integer) {
+				System.out.println("Mth3 forEach Anonymous class Value ::" + integer);
+			}
+		});
 
-			System.out.println("Addition is "+ addition.calculate(6, 3));
-			System.out.println("Multiplication is "+ multiply.calculate(6, 3));
-			System.out.println("Division is "+ divide.calculate(6, 3));
-			System.out.println("Subtration  is "+ subtraction.calculate(6, 3));
+		Consumer<Integer> myListAction = n -> {
+			System.out.println("Mth4 forEach lambda impl Value" + n);
+		};
+		myNumberList.forEach(myListAction);
 
-			IMathFunction.printResult(6, 3, "Addition", addition);
+		// Implicit Lambda Expression
+		myNumberList.forEach(n -> {
+			System.out.println("Mth5 forEach lambda impl Value" + n);
 
-		}
-
+		});
 
 	}
-
 }
 
